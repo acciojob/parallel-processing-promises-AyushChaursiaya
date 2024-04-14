@@ -10,17 +10,11 @@ const images = [
 
 btn.addEventListener("click", () => {
     images.forEach(imageObj => {
-        const img = document.createElement("img");
+        const img = new Image();
         img.onload = () => output.appendChild(img);
         img.src = imageObj.url;
     });
 });
-	// images.forEach(imageObj => {
-    //     const img = new Image();
-    //     img.onload = () => output.appendChild(img);
-    //     img.src = imageObj.url;
-    // });
-// });
 // function downloadImages() {
 //     const promises = images.map(imageObj => {
 //         return new Promise((resolve, reject) => {
