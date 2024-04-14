@@ -9,20 +9,22 @@ const images = [
 ];
 
 function downloadImages() {
-    Promise.all(images.map(imageObj => {
+    const promises = images.map(imageObj => {
         return new Promise((resolve, reject) => {
             const img = new Image();
-            img.onload = () => {
-                output.appendChild(img);
-                resolve(img);
-            };
+            img.onload = () => resolve(img);
             img.onerror = () => reject(new Error(`Failed to load image's URL: ${imageObj.url}`));
             img.src = imageObj.url;
         });
-    }))
+    });
+
+    Promise.all(promises)
+    .then(images => {
+        images.forEach(img => {
+            output.appendChild(img);
+        });
+    })
     .catch(error => {
         console.error(error);
     });
 }
-
-btn.addEventListener("click", downloadImages);
