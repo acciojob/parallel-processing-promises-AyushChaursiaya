@@ -1,4 +1,3 @@
-//your JS code here. If required.
 const output = document.getElementById("output");
 const btn = document.getElementById("download-images-button");
 
@@ -13,7 +12,10 @@ function downloadImages() {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => resolve(img);
-            img.onerror = () => reject(new Error(`Failed to load image's URL: ${imageObj.url}`));
+            img.onerror = () => {
+                console.error(`Failed to load image's URL: ${imageObj.url}`);
+                resolve(null); // Resolve with null if image loading fails
+            };
             img.src = imageObj.url;
         });
     });
@@ -21,10 +23,14 @@ function downloadImages() {
     Promise.all(promises)
     .then(images => {
         images.forEach(img => {
-            output.appendChild(img);
+            if (img) {
+                output.appendChild(img);
+            }
         });
     })
     .catch(error => {
         console.error(error);
     });
 }
+
+btn.addEventListener("click", downloadImages);
